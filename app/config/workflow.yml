@@ -1,0 +1,27 @@
+framework:
+    workflows:
+        book:
+            marking_store:
+                type: multiple_state
+            supports:
+                - AppBundle\Entity\Book
+            places:
+                - free
+                - reserved
+                - taken
+            transitions:
+                reserve:
+                    from: free
+                    to: reserved
+                take_without_reserve:
+                    from: free
+                    to: taken
+                take:
+                    from: reserved
+                    to: taken
+                decline_reserve:
+                    from: reserved
+                    to: free
+                drop:
+                    from: taken
+                    to: free

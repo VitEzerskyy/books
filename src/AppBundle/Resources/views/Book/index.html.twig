@@ -1,0 +1,49 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <h3>Books</h3>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Created</th>
+            <th>Published Year</th>
+            <th>Current status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        {% for book in books %}
+        <tbody>
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.created|date('Y-m-d') }}</td>
+            <td>{{ book.publishedYear }}</td>
+            <td> {% for transition in workflow_marked_places(book) %}
+                    <button name="transition" value="{{ transition }}">
+                        {{ transition }}
+                    </button>
+                {% endfor %}</td>
+            <td><form action="{{ path('book_apply_transition', {id: book.id}) }}" method="post">
+                    <div class="btn-group-horizontal" role="group">
+                        {% for transition in workflow_transitions(book) %}
+                            <button type="submit" name="transition" value="{{ transition.name }}"
+                                    {% if workflow_can(book, transition.name) -%}
+                                        class="btn btn-primary"
+                                    {%- else -%}
+                                        class="btn btn-danger" disabled="disabled"
+                                    {%- endif -%}
+                            >
+                                {{ transition.name }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+
+
+{% endblock %}
