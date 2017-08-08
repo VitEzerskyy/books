@@ -78,7 +78,7 @@ class Book
      *
      * @return integer
      */
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -102,7 +102,7 @@ class Book
      *
      * @return string
      */
-    public function getTitle(): string
+    public function getTitle()
     {
         return $this->title;
     }
@@ -126,7 +126,7 @@ class Book
      *
      * @return integer
      */
-    public function getPublishedYear(): int
+    public function getPublishedYear()
     {
         return $this->published_year;
     }

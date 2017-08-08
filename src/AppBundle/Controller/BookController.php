@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Book;
 use AppBundle\Entity\Repository\Book\BookReadRepository;
+use AppBundle\Entity\Repository\Book\BookWriteRepository;
+use AppBundle\Form\BookType;
 use Doctrine\ORM\Mapping\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -45,28 +47,31 @@ class BookController extends Controller
      * @Template()
      * @Route("/create", name="create_book")
      */
-//    public function createAction(Request $request)
-//    {
-//
-//        $survey = new Survey();
-//
-//        $form = $this->createForm(SurveyType::class, $survey);
-//
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $this->get('app.survey_write')->save($survey);
-//            $this->addFlash('success','The survey has added!');
-//            return $this->redirectToRoute('books_all');
-//        }
-//
-//        return ['form' => $form->createView()];
-//
-//    }
+    public function createAction(Request $request)
+    {
+
+        $book = new Book();
+
+        $form = $this->createForm(BookType::class, $book);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->get(BookWriteRepository::class)->save($book);
+            $this->addFlash('success','The book has added!');
+            return $this->redirectToRoute('books_all');
+        }
+
+        return ['form' => $form->createView()];
+
+    }
 
     /**
+     * applies transition for Book
      *
+     * @param Request $request
+     * @param Book $book
      *
+     * @return RedirectResponse
      *
      * @Route("/apply-transition/{id}", name="book_apply_transition")
      * @Method("POST")
@@ -86,6 +91,12 @@ class BookController extends Controller
     }
 
     /**
+     * resets marking for Book
+     *
+     * @param Book $book
+     *
+     * @return RedirectResponse
+     *
      * @Route("/reset-status/{id}", name="book_reset_status")
      * @Method("POST")
      */
@@ -96,6 +107,5 @@ class BookController extends Controller
 
         return $this->redirect($this->generateUrl('books_all'));
     }
-
 
 }
