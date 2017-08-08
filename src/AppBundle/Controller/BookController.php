@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Book;
+use AppBundle\Entity\Repository\Book\BookReadRepository;
+use Doctrine\ORM\Mapping\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -29,13 +31,7 @@ class BookController extends Controller
      */
     public function indexAction(Request $request): array
     {
-//        $books = $this->get('app.survey_read')->findByCreated();
-//        return ['books' => $books];
-
-        $books = $this->get('doctrine')->
-        getRepository('AppBundle:Book')->
-        findAll();
-
+        $books = $this->get(BookReadRepository::class)->findByCreated();
         return ['books' => $books];
     }
 
@@ -69,6 +65,9 @@ class BookController extends Controller
 //    }
 
     /**
+     *
+     *
+     *
      * @Route("/apply-transition/{id}", name="book_apply_transition")
      * @Method("POST")
      */
@@ -83,9 +82,7 @@ class BookController extends Controller
             $this->get('session')->getFlashBag()->add('danger', $e->getMessage());
         }
 
-        return $this->redirect(
-            $this->generateUrl('books_all')
-        );
+        return $this->redirectToRoute('books_all');
     }
 
     /**
@@ -94,7 +91,7 @@ class BookController extends Controller
      */
     public function resetMarkingAction(Book $book)
     {
-        $book->setStatus(null);
+        $book->setMarking(null);
         $this->get('doctrine')->getManager()->flush();
 
         return $this->redirect($this->generateUrl('books_all'));
