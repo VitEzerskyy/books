@@ -30,7 +30,7 @@ class BookWriteRepository implements MySqlWriteRepository
      * @param $object
      * @throws \Exception
      */
-    public function save($object): void
+    public function save($object)
     {
         try {
             if ($object instanceof Book) {

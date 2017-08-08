@@ -3,7 +3,9 @@
 namespace AppBundle\Form;
 
 use Doctrine\DBAL\Types\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,9 +22,15 @@ class BookType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->
-        add('title', \Symfony\Component\Form\Extension\Core\Type\TextType::class, array('label' => 'Title'))->
+        add('title',null, array('label' => 'Title'))->
         add('published_year', null, array('label' => 'Published Year'))->
-//        add('authors', null, array('label' => 'Authors'))->
+        add('marking', HiddenType::class, array('empty_data' => 'free'))->
+        add('authors', EntityType::class, array(
+            'class' => "AppBundle\Entity\Author",
+            "choice_label" => "name",
+            "multiple" => "true",
+            "expanded" => "true"
+        ))->
         add('submit', SubmitType::class, array(
             'attr' => array('class' => 'btn btn-primary')));
     }

@@ -9,6 +9,7 @@
             <th>Title</th>
             <th>Created</th>
             <th>Published Year</th>
+            <th>Authors</th>
             <th>Current status</th>
             <th>Action</th>
         </tr>
@@ -19,6 +20,7 @@
             <td>{{ book.title }}</td>
             <td>{{ book.created|date('Y-m-d') }}</td>
             <td>{{ book.publishedYear }}</td>
+            <td>{% for author in book.authors %} {{ author.name }} |{% endfor %}</td>
             <td> {% for transition in workflow_marked_places(book) %}
                     <button name="transition" value="{{ transition }}">
                         {{ transition }}
@@ -27,15 +29,11 @@
             <td><form action="{{ path('book_apply_transition', {id: book.id}) }}" method="post">
                     <div class="btn-group-horizontal" role="group">
                         {% for transition in workflow_transitions(book) %}
-                            <button type="submit" name="transition" value="{{ transition.name }}"
-                                    {% if workflow_can(book, transition.name) -%}
-                                        class="btn btn-primary"
-                                    {%- else -%}
-                                        class="btn btn-danger" disabled="disabled"
-                                    {%- endif -%}
-                            >
+                            {% if workflow_can(book, transition.name) %}
+                            <button class="btn btn-primary" type="submit" name="transition" value="{{ transition.name }}">
                                 {{ transition.name }}
                             </button>
+                             {% endif %}
                         {% endfor %}
                     </div>
                 </form>
@@ -44,6 +42,5 @@
         </tbody>
         {% endfor %}
     </table>
-
 
 {% endblock %}

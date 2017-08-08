@@ -80,32 +80,14 @@ class BookController extends Controller
     {
         try {
             $this->container->get('workflow.book')
-                ->apply($book, $request->request->get('transition'));
+                ->apply($book, $request->get('transition'));
 
-            $this->get('doctrine')->getManager()->flush();
+            $this->get(BookWriteRepository::class)->save($book);
         } catch (ExceptionInterface $e) {
             $this->get('session')->getFlashBag()->add('danger', $e->getMessage());
         }
 
         return $this->redirectToRoute('books_all');
-    }
-
-    /**
-     * resets marking for Book
-     *
-     * @param Book $book
-     *
-     * @return RedirectResponse
-     *
-     * @Route("/reset-status/{id}", name="book_reset_status")
-     * @Method("POST")
-     */
-    public function resetMarkingAction(Book $book)
-    {
-        $book->setMarking(null);
-        $this->get('doctrine')->getManager()->flush();
-
-        return $this->redirect($this->generateUrl('books_all'));
     }
 
 }

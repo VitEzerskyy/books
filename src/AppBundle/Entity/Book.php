@@ -28,6 +28,7 @@ class Book
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
      * @Assert\Length(
      *      min = 1,
      *      max = 255,
@@ -41,6 +42,13 @@ class Book
      * @var bool
      *
      * @ORM\Column(name="published_year", type="integer", nullable=false)
+     *
+     * @Assert\Range(
+     *      min = 1550,
+     *      max = 2017,
+     *      minMessage = "The minimum year is {{ limit }}",
+     *      maxMessage = "The maximum year is {{ limit }}"
+     *)
      */
     private $published_year;
 
@@ -63,7 +71,7 @@ class Book
     private $authors;
 
     /**
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $marking;
 
@@ -90,7 +98,7 @@ class Book
      *
      * @return Book
      */
-    public function setTitle($title): Book
+    public function setTitle(string $title): Book
     {
         $this->title = $title;
 
@@ -114,7 +122,7 @@ class Book
      *
      * @return Book
      */
-    public function setPublishedYear($publishedYear): Book
+    public function setPublishedYear(int $publishedYear): Book
     {
         $this->published_year = $publishedYear;
 
@@ -138,7 +146,7 @@ class Book
      *
      * @return Book
      */
-    public function setCreated($created): Book
+    public function setCreated(\DateTime $created): Book
     {
         $this->created = $created;
 
@@ -161,7 +169,7 @@ class Book
      * @param string
      *
      */
-    public function setMarking($marking)
+    public function setMarking(string $marking)
     {
         $this->marking = $marking;
 

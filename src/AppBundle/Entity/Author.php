@@ -65,7 +65,7 @@ class Author
      *
      * @return Author
      */
-    public function setName($name): Author
+    public function setName(string $name): Author
     {
         $this->name = $name;
 
