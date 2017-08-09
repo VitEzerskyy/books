@@ -38,7 +38,7 @@ class BookWriteRepository implements MySqlWriteRepository
                 $this->objectManager->flush();
             }
         } catch (\Exception $e) {
-            throw new \Exception("Something went wrong. Can't save Book");
+            throw new \Exception("Something went wrong. Can't save Book to database");
         }
     }
 

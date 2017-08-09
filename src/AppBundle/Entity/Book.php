@@ -43,6 +43,7 @@ class Book
      *
      * @ORM\Column(name="published_year", type="integer", nullable=false)
      *
+     * @Assert\NotBlank()
      * @Assert\Range(
      *      min = 1550,
      *      max = 2017,
@@ -67,6 +68,7 @@ class Book
      *      joinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="author_id", referencedColumnName="id")}
      *      )
+     * @Assert\Count(min = 1, minMessage = "At least one item must be selected")
      */
     private $authors;
 

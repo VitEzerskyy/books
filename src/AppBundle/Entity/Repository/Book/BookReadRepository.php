@@ -36,7 +36,7 @@ class BookReadRepository implements MySqlReadRepository
         try {
             $books = $this->objectManager->getRepository('AppBundle:Book')->findBy(array(),array('created' => 'DESC'));
         }catch (\Exception $e) {
-            throw new \Exception("Oops! Something went wrong. Can't fetch data from Book");
+            throw new \Exception("Oops! Something went wrong. Can't fetch data from database");
         }
         return $books;
     }
